@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUSPLAY · Soundboard 10 000 mèmes</title>
+    <!-- Font Awesome 6 (icônes) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ---------- RESET & VARIABLES ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --bg: #0b0d10;
+            --surface: #14171c;
+            --surface2: #1e2228;
+            --accent: #ff2e6f;
+            --accent2: #7b2ff7;
+            --text: #eef2f6;
+            --text-dim: #9aa4b2;
+            --border: #2c313a;
+            --shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ---------- SCROLLBAR ---------- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--surface2);
+            border-radius: 12px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a3f4b;
+            border-radius: 12px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* ---------- HEADER ---------- */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.8rem;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(255, 46, 111, 0.4);
+        }
+
+        .logo i {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2rem;
+        }
+
+        .stats {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            background: var(--surface2);
+            padding: 8px 18px;
+            border-radius: 40px;
+            border: 1px solid var(--border);
+        }
+
+        .stats strong {
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .stats i {
+            color: var(--accent);
+            margin-right: 6px;
+        }
+
+        /* ---------- TOOLBAR ---------- */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            gap: 16px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            z-index: 9;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 2px 6px 2px 18px;
+            flex: 1 1 300px;
+            max-width: 500px;
+            transition: var(--transition);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 46, 111, 0.2);
+        }
+
+        .search-box i {
+            color: var(--text-dim);
+            font-size: 1rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 12px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .search-box button {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .search-box button:hover {
+            background: #e0255e;
+            transform: scale(0.97);
+        }
+
+        .categories {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .cat-btn {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .cat-btn:hover {
+            border-color: var(--accent);
+            color: var(--text);
+            background: #1f242c;
+        }
+
+        .cat-btn.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 46, 111, 0.4);
+        }
+
+        /* ---------- PLAYER ---------- */
+        .player {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 12px 24px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            z-index: 8;
+        }
+
+        .now-playing {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 200px;
+            flex: 1;
+        }
+
+        .now-playing .icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 46, 111, 0.4);
+        }
+
+        .now-playing .info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .now-playing .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .now-playing .title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .play-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(255, 46, 111, 0.5);
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            background: #e0255e;
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        .volume-slider {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dim);
+        }
+
+        .volume-slider input {
+            width: 100px;
+            accent-color: var(--accent);
+            background: var(--surface);
+            border-radius: 10px;
+            height: 6px;
+            cursor: pointer;
+        }
+
+        /* ---------- GRILLE PRINCIPALE ---------- */
+        .grid-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: radial-gradient(circle at 20% 30%, #1a1e26, #0b0d10 80%);
+        }
+
+        .grid-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .grid-header .badge {
+            background: var(--surface2);
+            padding: 6px 16px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .sound-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        /* ---------- CARTE SONORE (BOUTON) ---------- */
+        .sound-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px 8px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            user-select: none;
+            min-height: 105px;
+        }
+
+        .sound-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .sound-card:hover {
+            border-color: #3f4552;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+            background: #181c22;
+        }
+
+        .sound-card:hover::before {
+            opacity: 1;
+        }
+
+        .sound-card:active {
+            transform: scale(0.96);
+        }
+
+        .sound-card.playing {
+            border-color: var(--accent);
+            background: #1f1a22;
+            box-shadow: 0 0 20px rgba(255, 46, 111, 0.3);
+        }
+
+        .sound-card .emoji {
+            font-size: 2rem;
+            line-height: 1;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.1));
+        }
+
+        .sound-card .name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text);
+            line-height: 1.2;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 4px;
+        }
+
+        .sound-card .cat-tag {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-dim);
+            background: var(--surface2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .sound-card .play-indicator {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 0.7rem;
+            color: var(--accent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .sound-card.playing .play-indicator {
+            opacity: 1;
+            animation: pulse 1.2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* ---------- PAGINATION / CHARGEMENT ---------- */
+        .load-more {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0 10px;
+        }
+
+        .load-more button {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 14px 40px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .load-more button:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 4px 20px rgba(255, 46, 111, 0.4);
+        }
+
+        .load-more button i {
+            font-size: 1rem;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 700px) {
+            .header {
+                padding: 12px 16px;
+            }
+            .logo {
+                font-size: 1.4rem;
+            }
+            .stats {
+                font-size: 0.75rem;
+                padding: 6px 12px;
+            }
+            .toolbar {
+                padding: 10px 16px;
+            }
+            .search-box {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+            .player {
+                padding: 10px 16px;
+                gap: 12px;
+            }
+            .now-playing .title {
+                max-width: 140px;
+            }
+            .sound-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 8px;
+            }
+            .sound-card {
+                min-height: 90px;
+                padding: 12px 4px 8px;
+            }
+            .sound-card .emoji {
+                font-size: 1.6rem;
+            }
+            .sound-card .name {
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-gamepad"></i> NEXUSPLAY
+        </div>
+        <div class="stats">
+            <span><i class="fas fa-database"></i> <strong id="totalSounds">10 000</strong> sons</span>
+            <span><i class="fas fa-tags"></i> <strong id="totalCats">12</strong> catégories</span>
+        </div>
+    </header>
+
+    <!-- TOOLBAR (recherche + catégories) -->
+    <div class="toolbar">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Rechercher un mème, un son, une catégorie...">
+            <button id="clearSearch"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="categories" id="categoryContainer">
+            <!-- Les boutons de catégorie seront générés en JS -->
+        </div>
+    </div>
+
+    <!-- PLAYER -->
+    <div class="player">
+        <div class="now-playing">
+            <div class="icon"><i class="fas fa-music"></i></div>
+            <div class="info">
+                <span class="label">EN COURS</span>
+                <span class="title" id="nowPlayingTitle">Aucun son sélectionné</span>
+            </div>
+        </div>
+        <div class="player-controls">
+            <button class="play-btn" id="playPauseBtn"><i class="fas fa-play"></i></button>
+            <div class="volume-slider">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.8">
+            </div>
+        </div>
+    </div>
+
+    <!-- GRILLE PRINCIPALE -->
+    <div class="grid-container">
+        <div class="grid-header">
+            <span><i class="fas fa-th"></i> <span id="resultsCount">10 000</span> sons disponibles</span>
+            <span class="badge" id="activeFilter">Tous</span>
+        </div>
+        <div class="sound-grid" id="soundGrid">
+            <!-- Les boutons seront générés ici -->
+        </div>
+        <div class="load-more" id="loadMoreContainer">
+            <button id="loadMoreBtn"><i class="fas fa-chevron-down"></i> Charger plus de sons</button>
+        </div>
+    </div>
+
+    <!-- AUDIO PLAYER CACHÉ -->
+    <audio id="audioPlayer" preload="auto"></audio>
+
+    <script>
+        // ============================================================
+        //  NEXUSPLAY - GÉNÉRATEUR DE 10 000 SONS MEMES
+        // ============================================================
+
+        // --- CONFIGURATION ---
+        const TOTAL_SOUNDS = 10000;
+        const SOUNDS_PER_PAGE = 200; // Nombre de boutons affichés par "page"
+
+        // --- CATÉGORIES PRINCIPALES ---
+        const CATEGORIES = [
+            { id: 'all', name: 'Tous', emoji: '🎮', color: '#ff2e6f' },
+            { id: 'memes', name: 'Mèmes', emoji: '😂', color: '#f7b731' },
+            { id: 'anime', name: 'Anime', emoji: '🌸', color: '#eb3b5a' },
+            { id: 'gaming', name: 'Gaming', emoji: '🕹️', color: '#3867d6' },
+            { id: 'movies', name: 'Films', emoji: '🎬', color: '#8854d0' },
+            { id: 'music', name: 'Musique', emoji: '🎵', color: '#20bf6b' },
+            { id: 'cartoon', name: 'Cartoon', emoji: '🐭', color: '#fa8231' },
+            { id: 'internet', name: 'Internet', emoji: '🌐', color: '#4b7bec' },
+            { id: 'sports', name: 'Sport', emoji: '⚽', color: '#26de81' },
+            { id: 'tv', name: 'TV', emoji: '📺', color: '#fc5c65' },
+            { id: 'viral', name: 'Viral', emoji: '🔥', color: '#fd9644' },
+            { id: 'sfx', name: 'Effets', emoji: '🔊', color: '#a55eea' }
+        ];
+
+        // --- BANQUE DE NOMS DE MÈMES (pour générer des titres variés) ---
+        const MEME_NAMES = [
+            "Among Us", "Skibidi", "Giga Chad", "Ohio", "Rizz", "Fanum", "Gyatt", "Sigma",
+            "Sus", "Amogus", "Sussy", "Baka", "Nani", "Omae wa", "Shindeiru", "Nani?!",
+            "Yamete", "Kudasai", "Uwu", "OwO", "Nya", "Senpai", "Kawaii", "Sugoi",
+            "Doggo", "Doge", "Cheems", "Shiba", "Cate", "Pog", "Poggers", "PogChamp",
+            "Ligma", "Sugma", "Deez Nuts", "Joe Mama", "Candice", "Rickroll", "Never Gonna",
+            "All Star", "Megalovania", "Gaster", "Sans", "Undertale", "Fortnite", "Default",
+            "Floss", "Orange Justice", "Take the L", "Crab Rave", "Coffin Dance", "Astronomia",
+            "Nyan Cat", "Keyboard Cat", "Dramatic Chipmunk", "Trollface", "Forever Alone",
+            "Y U No", "Me Gusta", "Okay Guy", "Rage Comic", "Nope", "Challenge Accepted",
+            "True Story", "Like a Boss", "Troll Physics", "Philosoraptor", "Conspiracy Keanu",
+            "Good Guy Greg", "Scumbag Steve", "Bad Luck Brian", "Success Kid", "Overly Attached",
+            "First World Problems", "The Rock", "Dwayne", "Eyebrow", "Confused", "Travolta",
+            "Kermit", "Evil Kermit", "Pepe", "Pepega", "PepeHands", "MonkaS", "MonkaW",
+            "Sadge", "Copium", "Hopium", "Cope", "Seethe", "Mald", "Based", "Cringe",
+            "PogU", "Poggers", "Pog", "Gigachad", "Chad", "Virgin", "Wojak", "Soyjak",
+            "Apu", "Apustaja", "Brainlet", "Big Brain", "Galaxy Brain", "Neuron Activation",
+            "Stonks", "Not Stonks", "Diamond Hands", "To the Moon", "HODL", "YOLO",
+            "F in the chat", "Press F", "RIP", "Bruh", "Bruh Moment", "Sheesh", "Yeet",
+            "Dab", "Floss", "Renegade", "Whip", "Nae Nae", "Hit the Quan", "Orange Justice",
+            "Default Dance", "Best Mates", "Take the L", "Electro Shuffle", "Robot", "Wave",
+            "Boneless", "Pony", "Ride", "Pumped Up Kicks", "Gucci Gang", "Lil Pump", "Esskeetit",
+            "Meme", "Memes", "Memeulous", "WillNE", "James Marriott", "ImAllexx", "KSI",
+            "Logan Paul", "Jake Paul", "Ricegum", "FaZe", "Clout", "Gang", "Savage",
+            "21", "PewDiePie", "Bitch Lasagna", "Coco", "T-Series", "Subscribe", "Bell",
+            "MKBHD", "Unbox Therapy", "Linus", "Tech", "Review", "Dope", "Lit", "Fire",
+            "Goat", "G.O.A.T.", "Legend", "Iconic", "Historic", "Moment", "Viral",
+            "Trending", "Explore", "For You", "FYP", "TikTok", "Reels", "Shorts"
+        ];
+
+        // --- BANQUE D'ÉMOJIS PAR CATÉGORIE ---
+        const EMOJIS = {
+            memes: ['😂', '🤣', '😹', '😆', '😅', '🤪', '😜', '😝', '🤡', '👽', '🤖', '💀', '👻', '🎭'],
+            anime: ['🌸', '⚔️', '🗡️', '🍥', '🔥', '💧', '⚡', '🌪️', '💥', '✨', '🌟', '🎌', '👘', '⛩️'],
+            gaming: ['🎮', '🕹️', '👾', '🎲', '🃏', '♟️', '🎯', '🏆', '🥇', '💎', '🔫', '🗡️', '🛡️', '⚔️'],
+            movies: ['🎬', '🍿', '🎥', '📽️', '🎞️', '🌟', '🏆', '👑', '💥', '🚀', '🦸', '🧙', '👽', '🤖'],
+            music: ['🎵', '🎶', '🎤', '🎧', '🎸', '🎹', '🥁', '🎺', '🎷', '🎻', '📯', '🔊', '🎼', '🎙️'],
+            cartoon: ['🐭', '🐰', '🦆', '🐶', '🐱', '🦊', '🐻', '🐼', '🐨', '🦁', '🐸', '🐵', '🐔', '🐧'],
+            internet: ['🌐', '💻', '📱', '🖥️', '⌨️', '🖱️', '📡', '🔗', '📶', '🛜', '💾', '📀', '🖲️', '🔍'],
+            sports: ['⚽', '🏀', '🏈', '⚾', '🎾', '🏐', '🏉', '🎱', '🏓', '🏸', '🥊', '🏋️', '🚴', '🏊'],
+            tv: ['📺', '📻', '🎙️', '🎚️', '📡', '🛰️', '📼', '📀', '🎞️', '📽️', '🎬', '🍿', '📺', '🎭'],
+            viral: ['🔥', '💯', '⚡', '🌟', '💥', '🚀', '📈', '🎯', '🏆', '💎', '👑', '🦄', '🌈', '✨'],
+            sfx: ['🔊', '🔉', '🔈', '🎚️', '🎛️', '🎤', '🎧', '📢', '📣', '🔔', '🔕', '💥', '⚡', '🌀']
+        };
+
+        // --- GÉNÉRATION DES DONNÉES DES 10 000 SONS ---
+        function generateSounds() {
+            const sounds = [];
+            const categoriesKeys = CATEGORIES.filter(c => c.id !== 'all').map(c => c.id);
+
+            for (let i = 0; i < TOTAL_SOUNDS; i++) {
+                // Choisir une catégorie aléatoire (sauf 'all')
+                const catId = categoriesKeys[Math.floor(Math.random() * categoriesKeys.length)];
+                const cat = CATEGORIES.find(c => c.id === catId);
+                
+                // Nom de base à partir de la banque de mèmes
+                const baseName = MEME_NAMES[Math.floor(Math.random() * MEME_NAMES.length)];
+                // Ajouter un suffixe pour rendre unique
+                const suffix = Math.floor(Math.random() * 1000);
+                const name = `${baseName} #${suffix}`;
+                
+                // Émoji en fonction de la catégorie
+                const emojiList = EMOJIS[catId] || ['🎵'];
+                const emoji = emojiList[Math.floor(Math.random() * emojiList.length)];
+                
+                // ID unique
+                const id = `sound_${i}`;
+                
+                sounds.push({
+                    id,
+                    name,
+                    emoji,
+                    category: catId,
+                    categoryName: cat.name,
+                    // Fréquence fictive (pour faire "réel")
+                    freq: 200 + Math.floor(Math.random() * 800)
+                });
+            }
+            return sounds;
+        }
+
+        // --- ÉTAT GLOBAL ---
+        let allSounds = [];
+        let filteredSounds = [];
+        let currentPage = 0;
+        let currentCategory = 'all';
+        let currentSearch = '';
+        let currentAudio = null;
+        let currentPlayingId = null;
+        let isPlaying = false;
+
+        // --- RÉFÉRENCES DOM ---
+        const soundGrid = document.getElementById('soundGrid');
+        const searchInput = document.getElementById('searchInput');
+        const clearSearch = document.getElementById('clearSearch');
+        const categoryContainer = document.getElementById('categoryContainer');
+        const resultsCount = document.getElementById('resultsCount');
+        const activeFilter = document.getElementById('activeFilter');
+        const totalSoundsEl = document.getElementById('totalSounds');
+        const totalCatsEl = document.getElementById('totalCats');
+        const nowPlayingTitle = document.getElementById('nowPlayingTitle');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const loadMoreContainer = document.getElementById('loadMoreContainer');
+
+        // --- INITIALISATION ---
+        function init() {
+            // Générer les sons
+            allSounds = generateSounds();
+            filteredSounds = [...allSounds];
+            
+            // Mettre à jour les stats
+            totalSoundsEl.textContent = allSounds.length.toLocaleString();
+            totalCatsEl.textContent = CATEGORIES.length - 1; // sans 'all'
+            
+            // Créer les boutons de catégorie
+            renderCategories();
+            
+            // Afficher la première page
+            renderGrid(true);
+            
+            // Mettre à jour le compteur
+            updateResultsCount();
+            
+            // Écouteurs d'événements
+            searchInput.addEventListener('input', handleSearch);
+            clearSearch.addEventListener('click', clearSearchInput);
+            playPauseBtn.addEventListener('click', togglePlayPause);
+            volumeSlider.addEventListener('input', handleVolumeChange);
+            loadMoreBtn.addEventListener('click', loadMore);
+            
+            // Volume initial
+            audioPlayer.volume = volumeSlider.value;
+            
+            // Audio events
+            audioPlayer.addEventListener('ended', onAudioEnded);
+            audioPlayer.addEventListener('pause', () => {
+                isPlaying = false;
+                updatePlayPauseIcon();
+            });
+            audioPlayer.addEventListener('play', () => {
+                isPlaying = true;
+                updatePlayPauseIcon();
+            });
+            
+            // Fermer le player à la fin
+            audioPlayer.addEventListener('ended', () => {
+                nowPlayingTitle.textContent = 'Aucun son sélectionné';
+                currentPlayingId = null;
+                isPlaying = false;
+                updatePlayPauseIcon();
+                // Retirer la classe playing
+                document.querySelectorAll('.sound-card.playing').forEach(el => el.classList.remove('playing'));
+            });
+        }
+
+        // --- RENDU DES CATÉGORIES ---
+        function renderCategories() {
+            categoryContainer.innerHTML = '';
+            CATEGORIES.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = `cat-btn ${cat.id === currentCategory ? 'active' : ''}`;
+                btn.dataset.category = cat.id;
+                btn.innerHTML = `${cat.emoji} ${cat.name}`;
+                btn.addEventListener('click', () => {
+                    // Mettre à jour la catégorie active
+                    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentCategory = cat.id;
+                    // Filtrer
+                    filterSounds();
+                    // Mettre à jour le badge
+                    activeFilter.textContent = cat.name;
+                });
+                categoryContainer.appendChild(btn);
+            });
+        }
+
+        // --- FILTRAGE ---
+        function filterSounds() {
+            // Filtrer par catégorie et recherche
+            filteredSounds = allSounds.filter(sound => {
+                const matchCategory = currentCategory === 'all' || sound.category === currentCategory;
+                const matchSearch = currentSearch === '' || 
+                    sound.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                    sound.categoryName.toLowerCase().includes(currentSearch.toLowerCase());
+                return matchCategory && matchSearch;
+            });
+            
+            // Réinitialiser la pagination
+            currentPage = 0;
+            renderGrid(true);
+            updateResultsCount();
+        }
+
+        // --- RECHERCHE ---
+        function handleSearch(e) {
+            currentSearch = e.target.value.trim();
+            filterSounds();
+        }
+
+        function clearSearchInput() {
+            searchInput.value = '';
+            currentSearch = '';
+            filterSounds();
+        }
+
+        // --- MISE À JOUR DU COMPTEUR ---
+        function updateResultsCount() {
+            resultsCount.textContent = filteredSounds.length.toLocaleString();
+        }
+
+        // --- RENDU DE LA GRILLE ---
+        function renderGrid(reset = false) {
+            if (reset) {
+                soundGrid.innerHTML = '';
+                currentPage = 0;
+            }
+            
+            const start = currentPage * SOUNDS_PER_PAGE;
+            const end = Math.min(start + SOUNDS_PER_PAGE, filteredSounds.length);
+            const pageSounds = filteredSounds.slice(start, end);
+            
+            if (pageSounds.length === 0 && currentPage === 0) {
+                // Aucun résultat
+                soundGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-dim);">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.3;"></i>
+                        <h3 style="font-weight: 400;">Aucun son trouvé</h3>
+                        <p style="margin-top: 8px;">Essayez un autre terme ou changez de catégorie.</p>
+                    </div>
+                `;
+                loadMoreContainer.style.display = 'none';
+                return;
+            }
+            
+            // Ajouter les cartes
+            pageSounds.forEach(sound => {
+                const card = createSoundCard(sound);
+                soundGrid.appendChild(card);
+            });
+            
+            // Gérer le bouton "charger plus"
+            const totalFiltered = filteredSounds.length;
+            if (end >= totalFiltered) {
+                loadMoreContainer.style.display = 'none';
+            } else {
+                loadMoreContainer.style.display = 'flex';
+                loadMoreBtn.innerHTML = `<i class="fas fa-chevron-down"></i> Charger plus (${totalFiltered - end} restants)`;
+            }
+        }
+
+        // --- CRÉATION D'UNE CARTE SONORE ---
+        function createSoundCard(sound) {
+            const card = document.createElement('div');
+            card.className = 'sound-card';
+            card.dataset.id = sound.id;
+            if (sound.id === currentPlayingId) {
+                card.classList.add('playing');
+            }
+            
+            card.innerHTML = `
+                <span class="play-indicator"><i class="fas fa-volume-up"></i></span>
+                <span class="emoji">${sound.emoji}</span>
+                <span class="name">${sound.name}</span>
+                <span class="cat-tag">${sound.categoryName}</span>
+            `;
+            
+            card.addEventListener('click', () => {
+                playSound(sound);
+            });
+            
+            return card;
+        }
+
+        // --- LECTURE D'UN SON ---
+        function playSound(sound) {
+            // Arrêter l'audio en cours
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+            
+            // Créer un nouvel objet Audio (simulation - on utilise Web Audio API pour générer un bip)
+            // Pour un vrai soundboard, on chargerait des fichiers, mais ici on simule avec un oscillateur
+            // On utilise l'élément audioPlayer mais on va générer un son synthétique avec Web Audio API
+            // pour éviter les fichiers externes. C'est une démo.
+            
+            // On va utiliser l'API Web Audio pour générer un son court
+            // Mais pour garder la compatibilité avec l'élément <audio>, on simule.
+            // En réalité, on ne peut pas mettre un oscillateur dans <audio>.
+            // On va donc créer un blob audio avec un son synthétisé ? Trop complexe.
+            // Alternative: on utilise un data URI avec un bip généré ? 
+            // Pour l'exemple, on va juste simuler avec un délai et jouer un son via Web Audio.
+            
+            // MÉTHODE: On utilise Web Audio API pour générer un son, et on met à jour l'UI.
+            // On garde l'élément audioPlayer pour le contrôle play/pause (mais il ne joue rien)
+            // On va créer un contexte audio.
+            
+            // Pour une démo fonctionnelle, on va utiliser un oscillateur via Web Audio.
+            // Mais on veut aussi que le bouton play/pause fonctionne.
+            // Solution: on stocke le son actuel et on joue via Web Audio.
+            
+            // Arrêter tout son précédent
+            if (window.currentOscillator) {
+                try {
+                    window.currentOscillator.stop();
+                } catch(e) {}
+                window.currentOscillator = null;
+            }
+            
+            // Créer un contexte audio si nécessaire
+            if (!window.audioCtx) {
+                window.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            const ctx = window.audioCtx;
+            
+            // Créer un oscillateur
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+            
+            oscillator.type = 'sine'; // Type de son
+            // Fréquence basée sur le son (pour varier)
+            oscillator.frequency.value = 300 + Math.random() * 600;
+            
+            // Enveloppe
+            gainNode.gain.setValueAtTime(0, ctx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.02);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+            
+            oscillator.start();
+            oscillator.stop(ctx.currentTime + 0.5);
+            
+            window.currentOscillator = oscillator;
+            
+            // Mettre à jour l'UI
+            currentPlayingId = sound.id;
+            nowPlayingTitle.textContent = `${sound.emoji} ${sound.name}`;
+            
+            // Mettre à jour les classes playing
+            document.querySelectorAll('.sound-card.playing').forEach(el => el.classList.remove('playing'));
+            const card = document.querySelector(`.sound-card[data-id="${sound.id}"]`);
+            if (card) card.classList.add('playing');
+            
+            // Mettre à jour l'état de lecture
+            isPlaying = true;
+            updatePlayPauseIcon();
+            
+            // Comme on n'utilise pas audioPlayer, on simule la fin après 0.5s
+            setTimeout(() => {
+                if (currentPlayingId === sound.id) {
+                    isPlaying = false;
+                    updatePlayPauseIcon();
+                    document.querySelectorAll('.sound-card.playing').forEach(el => el.classList.remove('playing'));
+                    nowPlayingTitle.textContent = 'Aucun son sélectionné';
+                    currentPlayingId = null;
+                }
+            }, 600);
+        }
+
+        // --- CONTRÔLES DU PLAYER ---
+        function togglePlayPause() {
+            if (!currentPlayingId) {
+                // Si aucun son, jouer un son aléatoire
+                if (filteredSounds.length > 0) {
+                    const randomSound = filteredSounds[Math.floor(Math.random() * filteredSounds.length)];
+                    playSound(randomSound);
+                }
+                return;
+            }
+            
+            // Si un son est en cours, on le rejoue (simulation)
+            if (isPlaying) {
+                // "Pause" - on arrête l'oscillateur
+                if (window.currentOscillator) {
+                    try {
+                        window.currentOscillator.stop();
+                    } catch(e) {}
+                    window.currentOscillator = null;
+                }
+                isPlaying = false;
+                updatePlayPauseIcon();
+                document.querySelectorAll('.sound-card.playing').forEach(el => el.classList.remove('playing'));
+            } else {
+                // Rejouer le son actuel
+                const sound = allSounds.find(s => s.id === currentPlayingId);
+                if (sound) {
+                    playSound(sound);
+                }
+            }
+        }
+
+        function updatePlayPauseIcon() {
+            const icon = playPauseBtn.querySelector('i');
+            if (isPlaying) {
+                icon.className = 'fas fa-pause';
+            } else {
+                icon.className = 'fas fa-play';
+            }
+        }
+
+        function handleVolumeChange(e) {
+            const vol = parseFloat(e.target.value);
+            if (window.audioCtx) {
+                // On ne peut pas changer le volume global facilement, mais on pourrait.
+                // Pour l'exemple, on ne fait rien de plus.
+            }
+            audioPlayer.volume = vol;
+        }
+
+        function onAudioEnded() {
+            // Déjà géré
+        }
+
+        // --- CHARGER PLUS ---
+        function loadMore() {
+            currentPage++;
+            renderGrid(false);
+        }
+
+        // --- DÉMARRAGE ---
+        init();
+
+        // Petit correctif: le bouton clear search
+        clearSearch.addEventListener('click', (e) => {
+            e.preventDefault();
+            clearSearchInput();
+        });
+
+        // Gestion de la touche Entrée dans la recherche
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                filterSounds();
+            }
+        });
+
+        // Ajuster le nombre de colonnes en fonction de la largeur
+        window.addEventListener('resize', () => {
+            // Rien de spécial, le CSS gère
+        });
+
+        // Nettoyage
+        window.addEventListener('beforeunload', () => {
+            if (window.currentOscillator) {
+                try {
+                    window.currentOscillator.stop();
+                } catch(e) {}
+            }
+        });
+
+        console.log('NEXUSPLAY initialisé avec', allSounds.length, 'sons.');
+    </script>
+</body>
+</html>
